@@ -56,7 +56,6 @@ sinhTransform <- function(transformationId="defaultsinhTransform",
 #' brks.trans <- trans.func(brks)
 #' brks.trans
 #' @export
-#' @importFrom flowCore arcsinhTransform
 flowCore_asinht_trans <- function(..., n = 6, equal.space = FALSE){
   trans <- arcsinhTransform(...)
   inv <- sinhTransform(...)

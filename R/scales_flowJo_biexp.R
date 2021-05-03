@@ -1,5 +1,5 @@
 #' Add a flowJo biexponential scale to the x or y axes of a ggcyto plot.
-#' 
+#'
 #' @name scales_flowjo_biexp
 #' @aliases scale_x_flowjo_biexp scale_y_flowjo_biexp
 #' scale_x_flowJo_biexp scale_y_flowJo_biexp
@@ -7,13 +7,12 @@
 #' @param maxValue,widthBasis,pos,neg see 'help(flowjo_biexp')
 #' @param equal.space whether to display the breaks in equal.space format
 #' @return ScaleContinuous object
-#' @importFrom flowWorkspace flowjo_biexp_trans
-#' @examples 
+#' @examples
 #' data(GvHD)
 #' fr <- GvHD[[1]]
 #' p <- ggcyto(fr, aes(x = `FL1-H`)) + geom_density()
 #' #display at raw scale
-#' p 
+#' p
 #' #display at transformed scale
 #' p + scale_x_flowjo_biexp(maxValue = 1e4, widthBasis = 0)
 #' @export

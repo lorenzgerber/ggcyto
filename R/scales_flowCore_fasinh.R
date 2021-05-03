@@ -1,14 +1,14 @@
 #' Add a flowCore inverse hyperbolic sine scale to the x or y axes of a ggcyto plot.
-#' 
+#'
 #' @param ... common continuous scale parameters passed to 'continuous_scale' (not used currently)
 #' @param a,b,c see 'help(arcsinhTransform')
 #' @return ScaleContinuous object
-#' @examples 
+#' @examples
 #' data(GvHD)
 #' fr <- GvHD[[1]]
 #' p <- ggcyto(fr, aes(x = `FL1-H`)) + geom_density()
 #' #display at raw scale
-#' p 
+#' p
 #' #display at transformed scale
 #' p + scale_x_flowCore_fasinh(a = 2)
 #' @export
@@ -57,7 +57,6 @@ sinhTransform <- function(transformationId="defaultsinhTransform",
 #' brks.trans
 #' @export
 #' @importFrom flowCore arcsinhTransform
-#' @importFrom flowWorkspace flow_trans
 flowCore_asinht_trans <- function(..., n = 6, equal.space = FALSE){
   trans <- arcsinhTransform(...)
   inv <- sinhTransform(...)

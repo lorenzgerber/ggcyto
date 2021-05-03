@@ -25,7 +25,7 @@ data(GvHD)
 fr <- GvHD[[1]]
 p <- ggcyto(fr, aes(x = `FL1-H`)) + geom_density()
 #display at raw scale
-p 
+p
 #display at transformed scale
 p + scale_x_flowCore_fasinh(a = 2)
 }

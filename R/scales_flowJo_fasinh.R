@@ -1,18 +1,17 @@
 #' Add a flowJo inverse hyperbolic sine scale to the x or y axes of a ggcyto plot.
-#' 
+#'
 #' @name scales_flowjo_fasinh
 #' @aliases scale_x_flowjo_fasinh scale_y_flowjo_fasinh
 #' scale_x_flowJo_fasinh scale_y_flowJo_fasinh
 #' @param ... common continuous scale parameters passed to 'continuous_scale' (not used currently)
 #' @param m,t see 'help(flowjo_fasinh')
 #' @return ScaleContinuous object
-#' @importFrom flowWorkspace flowjo_fasinh_trans
-#' @examples 
+#' @examples
 #' data(GvHD)
 #' fr <- GvHD[[1]]
 #' p <- ggcyto(fr, aes(x = `FL1-H`)) + geom_density()
 #' #display at raw scale
-#' p 
+#' p
 #' #display at transformed scale
 #' p + scale_x_flowjo_fasinh(t = 1e4)
 #' @export

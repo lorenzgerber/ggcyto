@@ -57,7 +57,77 @@ sinhTransform <- function(transformationId="defaultsinhTransform",
 #' brks.trans
 #' @export
 flowCore_asinht_trans <- function(..., n = 6, equal.space = FALSE){
-  trans <- arcsinhTransform(...)
+  trans <- flowCore::arcsinhTransform(...)
   inv <- sinhTransform(...)
   flow_trans(name = "asinht", trans.fun = trans, inverse.fun = inv, n = n, equal.space = equal.space)
+}
+
+#' generate a trans objects
+#' Used by other specific trans constructor
+#' @param name transformation name
+flow_trans <- function(name, trans.fun, inverse.fun, equal.space = FALSE, n = 6){
+
+  brk <- function(x){
+    flow_breaks(x, n = n, equal.space = equal.space, trans.fun, inverse.fun)
+  }
+
+  if(equal.space){
+    fmt <- format_format(digits = 0)
+  }else{
+    fmt <- function(x){
+      pretty10exp(as.numeric(x),drop.1=TRUE)
+    }
+
+  }
+
+  scales::trans_new(name, transform = trans.fun, inverse = inverse.fun, breaks = brk, format = fmt)
+}
+
+pretty10exp <-function (x, drop.1 = FALSE, digits.fuzz = 7)
+{
+  eT <- floor(log10(abs(x)) + 10^-digits.fuzz)
+  mT <- signif(x/10^eT, digits.fuzz)
+  ss <- vector("list", length(x))
+  for (i in seq(along = x)) ss[[i]] <- if (is.na(x[i]))
+    quote(NA)
+  else if (x[i] == 0)
+    quote(0)
+  else if (drop.1 && mT[i] == 1)
+    substitute(10^E, list(E = eT[i]))
+  else if (drop.1 && mT[i] == -1)
+    substitute(-10^E, list(E = eT[i]))
+  else substitute(A %*% 10^E, list(A = mT[i], E = eT[i]))
+
+  do.call("expression", ss)
+}
+
+#' flow_breaks
+#' breaks for flow
+#' @param x data
+#' @param n number of breaks
+#' @param equal.space should it be equal sapced
+#' @param trans.fun actual transform function
+#' @param inverse.fun inverse transform function
+#' @export
+flow_breaks <- function(x, n = 6, equal.space = FALSE, trans.fun, inverse.fun){
+  rng.raw <- range(x, na.rm = TRUE)
+  if(equal.space){
+
+    rng <- trans.fun(rng.raw)
+    min <- floor(rng[1])
+    max <- ceiling(rng[2])
+    if (max == min)
+      return(inverse.fun(min))
+    by <- (max - min)/(n-1)
+
+    myBreaks <- inverse.fun(seq(min, max, by = by))
+
+  }else{
+    #log10 (e.g. 0, 10, 1000, ...)
+    base10raw <- unlist(lapply(2:n,function(e)10^e))
+    base10raw <- c(0,base10raw)
+    myBreaks <- base10raw[base10raw>rng.raw[1]&base10raw<rng.raw[2]]
+
+  }
+  myBreaks
 }

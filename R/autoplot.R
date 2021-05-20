@@ -5,7 +5,7 @@
 #' When autoplot is called on a \code{GatingSet}/\code{Gatinghierarchy}, the second argument should be a gate or population node. And the dimensions(channels/markers) are deduced from the gate dimensions.
 #'
 #' @param object The data source. A core cytometry data structure. A flowFrame, flowSet, GatingSet or GatingHierarchy object
-#' @param x define the x dimension of the plot (not used when object is a GatingSet). When object is a flowFrame, it can be missing, which plots 1d density plot on all the channels. 
+#' @param x define the x dimension of the plot (not used when object is a GatingSet). When object is a flowFrame, it can be missing, which plots 1d density plot on all the channels.
 #' @param y define the y dimension of the plot. Default is NULL, which means 1d densityplot.
 #' @param bins passed to geom_hex
 #' @param axis_inverse_trans logical flag indicating whether to add \link{axis_x_inverse_trans} and axis_x_inverse_trans layers.
@@ -15,33 +15,6 @@
 #' @aliases autoplot
 #' @return a ggcyto object
 #'
-#' @examples
-#' library(flowCore)
-#' data(GvHD)
-#' fs <- GvHD[subset(pData(GvHD), Patient %in%5:7 & Visit %in% c(5:6))[["name"]]]
-#'
-#' #1d- density plot
-#' autoplot(fs, x = "SSC-H")
-#'
-#' #1d- density plot on all channels
-#' autoplot(fs[[1]])
-#' 
-#' #2d plot: default geom_hex plot
-#' autoplot(fs, x = 'FSC-H', y ='SSC-H')
-#'
-#' #autplot for GatingSet
-#' dataDir <- system.file("extdata",package="flowWorkspaceData")
-#' gs <- load_gs(list.files(dataDir, pattern = "gs_manual",full = TRUE))
-#' autoplot(gs, "CD3+")
-#' #display axis values in transformed scale
-#' autoplot(gs, "CD3+", axis_inverse_trans = FALSE)
-#'
-#' #autplot for GatingHierarchy
-#' gh <- gs[[1]]
-#' autoplot(gh) # by default the strip.text shows the parent population
-#'
-#' #To display the gate name
-#' #autoplot(gh , strip.text = "gate")
 #' @export
 #' @export autoplot
 autoplot.flowSet <- function(object, x, y = NULL, bins = 30, ...){
@@ -87,18 +60,18 @@ autoplot.cytoframe <- function(object, ...){
 #' @export
 #' @rdname autoplot
 autoplot.flowFrame <- function(object, x, ...){
-  
+
   if(missing(x)){
-    density_fr_all(object) 
+    density_fr_all(object)
   }else{
     object <- fortify_fs(object)
     autoplot(object, x = x, ...)
   }
-    
+
 }
 
 density_fr_all <- function(fr, strip.text = c("both", "channel", "marker"), ...){
-  
+
   #plot each individual channel
   Objs <- sapply(colnames(fr), function(chnl){
       p <- autoplot(fr, chnl, ...)
@@ -114,16 +87,16 @@ density_fr_all <- function(fr, strip.text = c("both", "channel", "marker"), ...)
       attr(p$data, "strip.text") <- chnl
       p
     }, simplify = FALSE)
-  
-  
+
+
   #convert it to a special class to dispatch the dedicated print method
   Objs <- as(Objs, "ggcyto_GatingLayout")
   Objs@arrange.main <- identifier(fr)
 
 
   Objs
-  
-  
+
+
 }
 
 #' @export
@@ -145,7 +118,7 @@ autoplot.GatingSet <- function(object, gate, x = NULL,  y = "SSC-A", bins = 30, 
     g <- filter_to_list(g)
     ref <- g$refs[1]
     g <- gh_pop_get_gate(object[[1]], ref)
-    
+
   }
   if(is.null(x)){
     #determine dimensions from gate

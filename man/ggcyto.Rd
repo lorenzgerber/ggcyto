@@ -61,12 +61,12 @@ To invoke \code{ggcyto}:
 data(GvHD)
 fs <- GvHD[1:3]
 #construct the `ggcyto` object (inherits from `ggplot` class)
-p <- ggcyto(fs, aes(x = `FSC-H`)) 
-p + geom_histogram() 
+p <- ggcyto(fs, aes(x = `FSC-H`))
+p + geom_histogram()
 
 # display density/area
 p + geom_density()
-p + geom_area(stat = "density") 
+p + geom_area(stat = "density")
 
 # 2d scatter plot
 p <- ggcyto(fs, aes(x = `FSC-H`, y =  `SSC-H`))
@@ -79,9 +79,9 @@ ggcyto(fs, aes_string(col1,col2)) + geom_hex()
 ## More flowSet examples
 fs <- GvHD[subset(pData(GvHD), Patient \%in\%5:7 & Visit \%in\% c(5:6))[["name"]]]
 # 1d histogram/densityplot
-p <- ggcyto(fs, aes(x = `FSC-H`)) 
+p <- ggcyto(fs, aes(x = `FSC-H`))
 #facet_wrap(~name)` is used automatically
-p1 <- p + geom_histogram() 
+p1 <- p + geom_histogram()
 p1
 #overwriting the default faceeting
 p1 + facet_grid(Patient~Visit)
@@ -104,7 +104,7 @@ p
 ## GatingSet
 dataDir <- system.file("extdata",package="flowWorkspaceData")
 gs <- load_gs(list.files(dataDir, pattern = "gs_manual",full = TRUE))
-# 2d plot 
+# 2d plot
 ggcyto(gs, aes(x = CD4, y = CD8), subset = "CD3+") + geom_hex(bins = 64)
 
 # 1d plot

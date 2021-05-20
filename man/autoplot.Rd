@@ -85,31 +85,3 @@ Overloaded autoplot methods for the cytometry data structure: \code{flowFrame} o
 It plots the cytometry data with \code{geom_histogram}, \code{geom_density} or \code{geom_hex}.
 When autoplot is called on a \code{GatingSet}/\code{Gatinghierarchy}, the second argument should be a gate or population node. And the dimensions(channels/markers) are deduced from the gate dimensions.
 }
-\examples{
-library(flowCore)
-data(GvHD)
-fs <- GvHD[subset(pData(GvHD), Patient \%in\%5:7 & Visit \%in\% c(5:6))[["name"]]]
-
-#1d- density plot
-autoplot(fs, x = "SSC-H")
-
-#1d- density plot on all channels
-autoplot(fs[[1]])
-
-#2d plot: default geom_hex plot
-autoplot(fs, x = 'FSC-H', y ='SSC-H')
-
-#autplot for GatingSet
-dataDir <- system.file("extdata",package="flowWorkspaceData")
-gs <- load_gs(list.files(dataDir, pattern = "gs_manual",full = TRUE))
-autoplot(gs, "CD3+")
-#display axis values in transformed scale
-autoplot(gs, "CD3+", axis_inverse_trans = FALSE)
-
-#autplot for GatingHierarchy
-gh <- gs[[1]]
-autoplot(gh) # by default the strip.text shows the parent population
-
-#To display the gate name
-#autoplot(gh , strip.text = "gate")
-}
